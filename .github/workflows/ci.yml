@@ -1,0 +1,35 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Docker image
+      run: docker build -t hackathon-starter .
+
+    - name: Lint YAML files
+      run: |
+        sudo apt update && sudo apt install yamllint -y
+        yamllint .
+
+    - name: Lint Dockerfile
+      run: |
+        docker run --rm -i hadolint/hadolint < Dockerfile
