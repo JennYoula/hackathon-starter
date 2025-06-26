@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hackathon-starter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hackathon-starter
+  template:
+    metadata:
+      labels:
+        app: hackathon-starter
+    spec:
+      containers:
+      - name: hackathon-starter
+        image: JennYoula/hackathon-starter
+        ports:
+        - containerPort: 3000

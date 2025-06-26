@@ -1,0 +1,29 @@
+name: CI Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build Docker image
+      run: docker build -t hackathon-starter .
+
+    - name: Lint Dockerfile
+      uses: hadolint/hadolint-action@v1.5.0
+      with:
+        dockerfile: Dockerfile
+
+    - name: Lint YAML files
+      uses: actionshub/yamllint@main
